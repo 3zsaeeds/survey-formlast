@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>استبيان الارتباط الوظيفي - مركز الإحالات الطبية</title>
+
+<style>
+@font-face {
+  font-family: 'GESSS';
+  src: url('./ArbFONTS-GE_SS_Unique_Bold_5.otf') format('opentype');
+}
+@font-face {
+  font-family: 'SakallaMajala';
+  src: url('./majalla.ttf') format('truetype');
+}
+
+body {
+  background-color: #C3BE9D;
+  color: #222;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+  font-family: 'SakallaMajala', sans-serif;
+}
+
+header {
+  background-color: #2DA98B;
+  color: white;
+  text-align: center;
+  padding: 25px;
+  font-family: 'GESSS', sans-serif;
+  font-size: 26px;
+  border-bottom: 5px solid #73B7C4;
+}
+
+section {
+  margin: 30px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 14px;
+  max-width: 950px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+h2 {
+  color: #2DA98B;
+  font-family: 'GESSS', sans-serif;
+  border-right: 5px solid #73B7C4;
+  padding-right: 10px;
+  margin-top: 40px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.question {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+/* ✅ تنسيق الاختيارات لتظهر كلها على صف واحد بدون خروج نص */
+.scale {
+  display: flex;
+  justify-content: space-between;
+  gap: 3px;
+  margin-top: 10px;
+  text-align: center;
+  flex-wrap: nowrap;
+}
+
+.scale label {
+  width: 19%;
+  background: #f5f7fa;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 2px;
+  transition: 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(9px, 2.6vw, 12px);
+  box-sizing: border-box;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow: hidden;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.scale label:hover {
+  background-color: #73B7C4;
+  color: white;
+}
+
+.scale input[type="radio"] {
+  margin-left: 3px;
+  accent-color: #2DA98B;
+  transform: scale(1.1);
+}
+
+@media (max-width: 480px) {
+  .scale label {
+    width: 19%;
+    font-size: 11px;
+    padding: 5px 0;
+  }
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  font-family: 'SakallaMajala';
+}
+
+.submit-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+#loadingMessage {
+  display: none;
+  color: #2DA98B;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-family: 'GESSS';
+}
+
+button {
+  background: linear-gradient(90deg, #2DA98B, #73B7C4);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 50px;
+  font-size: 18px;
+  cursor: pointer;
+  font-family: 'GESSS', sans-serif;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #73B7C4, #2DA98B);
+}
+
+.progress-bar {
+  width: 0%;
+  height: 8px;
+  background-color: #2DA98B;
+  border-radius: 5px;
+  margin-top: 10px;
+  transition: width 0.5s;
+}
+
+footer {
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  padding: 20px;
+  font-family: 'SakallaMajala';
+}
+</style>
+</head>
+
+<body>
+<header>استبيان الارتباط الوظيفي لموظفي مركز الإحالات الطبية</header>
+
+<section>
+  <p>يهدف هذا الاستبيان إلى التعرف على مستوى الارتباط والرضا الوظيفي لدى الموظفين في مركز الإحالات الطبية لتحسين بيئة العمل وتطوير الخدمات. جميع الإجابات سرية وتستخدم لأغراض التحسين فقط.</p>
+
+  <form id="surveyForm">
+    <div id="questions"></div>
+
+    <h2>الأسئلة المفتوحة</h2>
+    <div class="question">
+      <label>برأيك، ما هي التحديثات والمواضيع التي ترغب بأن يقوم المركز بطرحها عند التواصل في المستقبل والتي تعتقد بأنها ستكون ذات أثر إيجابي؟</label>
+      <textarea name="updates"></textarea>
+    </div>
+
+    <div class="question">
+      <label>هل لديك أي اقتراحات أو ملاحظات أخرى ترغب في مشاركتها حول تحسين وسائل التواصل في المركز؟</label>
+      <textarea name="suggestions"></textarea>
+    </div>
+
+    <div class="submit-container">
+      <p id="loadingMessage">📩 برجاء عدم إغلاق الصفحة لحين انتهاء إرسال الإجابات...</p>
+      <button type="submit">إرسال الإجابات</button>
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </form>
+</section>
+
+<footer>© 2025 مركز الإحالات الطبية - إدارة الموارد البشرية - جميع الحقوق محفوظة</footer>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycby33YC6ALniZKykXorzFM-voKd2nrVd1L6A-Wxfr2mBwWSzBQOvitWokeUGACLV7u0e/exec";
+const form = document.getElementById("surveyForm");
+const progressBar = document.getElementById("progressBar");
+const loadingMessage = document.getElementById("loadingMessage");
+
+const questions = [
+  "أستفيد من الخدمات المقدمة من إدارات المركز",
+  "أتلقى معلومات كافية ومهمة من المركز أو إدارتي بشكل منتظم",
+  "يتم تشجيعي على المشاركة في اجتماعات وورش العمل والفعاليات في المركز",
+  "أعتقد أن هناك فرصًا كافية للتواصل وتبادل الأفكار بين الموظفين في المركز"
+];
+
+const container = document.getElementById("questions");
+questions.forEach((q, i) => {
+  const div = document.createElement("div");
+  div.className = "question";
+  div.innerHTML = `
+    <label>${q}</label>
+    <div class="scale">
+      <label><input type="radio" name="q${i}" value="أوافق بشدة" required> أوافق بشدة</label>
+      <label><input type="radio" name="q${i}" value="أوافق"> أوافق</label>
+      <label><input type="radio" name="q${i}" value="محايد"> محايد</label>
+      <label><input type="radio" name="q${i}" value="أعارض"> أعارض</label>
+      <label><input type="radio" name="q${i}" value="أعارض بشدة"> أعارض بشدة</label>
+    </div>`;
+  container.appendChild(div);
+});
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  loadingMessage.style.display = "block";
+  progressBar.style.width = "60%";
+
+  fetch(scriptURL, { method: "POST", body: new FormData(form)})
+    .then(() => {
+      progressBar.style.width = "100%";
+      setTimeout(() => {
+        loadingMessage.style.display = "none";
+        alert("✅ تم إرسال الإجابات بنجاح، شكرًا لمشاركتك!");
+        form.reset();
+        progressBar.style.width = "0%";
+      }, 1000);
+    })
+    .catch(() => {
+      alert("⚠️ حدث خطأ أثناء الإرسال، تحقق من الاتصال بالإنترنت.");
+      loadingMessage.style.display = "none";
+      progressBar.style.width = "0%";
+    });
+});
+</script>
+</body>
+</html>
